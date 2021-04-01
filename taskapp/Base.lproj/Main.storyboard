@@ -43,13 +43,13 @@
                     <navigationItem key="navigationItem" id="yiS-B4-QvA">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="MJo-JB-LHs">
                             <connections>
-                                <segue destination="l2D-Nz-xCa" kind="show" id="7Wq-Wk-wYv"/>
+                                <segue destination="l2D-Nz-xCa" kind="show" id="jqt-WC-hSm"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="fzH-jS-QaF" id="c0e-us-vjC"/>
-                        <segue destination="l2D-Nz-xCa" kind="show" identifier="cellSegue" id="hZ9-Ua-OaQ"/>
+                        <segue destination="l2D-Nz-xCa" kind="show" identifier="cellSegue" id="yu4-AN-TJt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -122,7 +122,7 @@
                     <navigationItem key="navigationItem" id="sZy-wI-q96"/>
                     <connections>
                         <outlet property="contentsTextView" destination="1cW-LZ-gSa" id="o15-Es-oJW"/>
-                        <outlet property="datePI" destination="Lcn-86-mMT" id="uaD-DX-OsC"/>
+                        <outlet property="datePicker" destination="Lcn-86-mMT" id="eln-0q-Cbv"/>
                         <outlet property="titleTextField" destination="sW1-Xo-nd7" id="bbJ-fd-9D2"/>
                     </connections>
                 </viewController>
@@ -150,7 +150,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hZ9-Ua-OaQ"/>
+        <segue reference="yu4-AN-TJt"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">
