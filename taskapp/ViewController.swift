@@ -9,38 +9,37 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate{
     
     let realm = try! Realm()  // ←追加
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchMemo: UISearchBar!
+    var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         tableView.delegate = self
         tableView.dataSource = self
-    }
+        searchMemo.delegate = self
+        searchMemo.enablesReturnKeyAutomatically = false
 
-    // DB内のタスクが格納されるリスト。
-    // 日付の近い順でソート：昇順
-    // 以降内容をアップデートするとリスト内は自動的に更新される。
-    var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)  // ←追加
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return taskArray.count
+            return taskArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        
-        let task = taskArray[indexPath.row]
-        cell.textLabel?.text = task.title
+            let task = taskArray[indexPath.row]
+            cell.textLabel?.text = task.title
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-
-        let dateString:String = formatter.string(from: task.date)
-        cell.detailTextLabel?.text = dateString
+            let dateString:String = formatter.string(from: task.date)
+            cell.detailTextLabel?.text = dateString
 
         return cell
     }
@@ -100,7 +99,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
-
-
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchMemo.autocapitalizationType = .none
+        searchMemo.text = ""
+        return true
+        }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchMemo.endEditing(true)
+        guard let searchtext = searchMemo.text else {return}
+        let result = realm.objects(Task.self)
+            .filter("category CONTAINS '\(searchtext)'")
+            .sorted(byKeyPath: "date", ascending: true)
+       
+        if result.count == 0{
+            taskArray = realm.objects(Task.self).sorted(byKeyPath: "date", ascending: true)
+        }else{
+            taskArray = result
+        }
+        tableView.reloadData()
+    }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -13,6 +14,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let config = Realm.Configuration(
+            schemaVersion: 1,migrationBlock: {migration, oldSchemaVersion in if (oldSchemaVersion < 1) {}
+            }
+        )
+        Realm.Configuration.defaultConfiguration = config
+        _ = try! Realm()
+        
         // Override point for customization after application launch.
         // ユーザに通知の許可を求める --- ここから ---
         let center = UNUserNotificationCenter.current()
